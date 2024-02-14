@@ -19,9 +19,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Transacao {
     @Id
+    @Column(name = "id")
     private Integer idCliente;
     private Long valor;
-    private Character tipo;
+    private String tipo;
     private String descricao; //limitar o tamanho?
     @Column(name = "realizada_em")
     private LocalDateTime realizadaEm;

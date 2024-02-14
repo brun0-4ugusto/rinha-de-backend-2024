@@ -23,9 +23,9 @@ public class TransacaoController {
             return ResponseEntity.notFound().build();
 
         switch (body.tipo()) {
-            case 'c':
+            case "c":
                 return ResponseEntity.ok(service.executeCreditOperation(body, id));
-            case 'd':
+            case "d":
                 try {
                     return ResponseEntity.ok(service.executeDebitOperation(body, id));
                 } catch (Exception e) {

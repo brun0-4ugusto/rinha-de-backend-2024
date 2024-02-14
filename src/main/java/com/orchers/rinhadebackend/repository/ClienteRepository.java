@@ -7,5 +7,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
     @Query("update Cliente c set c.saldo = c.saldo + :valor where c.id = :id")
-    Cliente updateValor(@Param("id") Integer id, @Param("valor") long valor);
+    Cliente creditOperation(@Param("id") Integer id, @Param("valor") long valor);
+
+    @Query("update Cliente c set c.saldo = c.saldo - :valor where c.id = :id")
+    Cliente debitOperation(@Param("id") Integer id, @Param("valor") long valor);
 }
