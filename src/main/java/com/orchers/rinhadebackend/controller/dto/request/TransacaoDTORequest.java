@@ -1,8 +1,7 @@
 package com.orchers.rinhadebackend.controller.dto.request;
 
-public record TransacaoDTORequest(
-        Long valor,
-        String tipo,
-        String descricao
-) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public record TransacaoDTORequest(@NotBlank Long valor, @NotBlank Character tipo, @NotBlank @Size(max = 10) String descricao) {
 }
