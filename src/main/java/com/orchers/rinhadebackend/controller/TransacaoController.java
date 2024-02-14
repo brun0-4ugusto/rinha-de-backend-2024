@@ -18,16 +18,16 @@ public class TransacaoController {
     }
 
     @PostMapping("/clientes/{id}/transacoes")
-    public ResponseEntity<?> postTransacao(@PathVariable int id, @RequestBody TransacaoDTORequest body) {
+    public ResponseEntity<?> postTransacao(@PathVariable Integer id, @RequestBody TransacaoDTORequest body) {
         if (id > 5 || id < 0)
             return ResponseEntity.notFound().build();
 
         switch (body.tipo()) {
             case 'c':
-                return ResponseEntity.ok(service.executeCreditOperation());
+                return ResponseEntity.ok(service.executeCreditOperation(body, id));
             case 'd':
                 try {
-                    return ResponseEntity.ok(service.executeDebitOperation());
+                    return ResponseEntity.ok(service.executeDebitOperation(body, id));
                 } catch (Exception e) {
                     return ResponseEntity.unprocessableEntity().build();
                 }

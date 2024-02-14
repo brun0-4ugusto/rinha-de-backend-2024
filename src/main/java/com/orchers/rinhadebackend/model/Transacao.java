@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Transacao {
     @Id
-    private Integer id;
+    private Integer idCliente;
     private Long valor;
     private Character tipo;
     private String descricao; //limitar o tamanho?
