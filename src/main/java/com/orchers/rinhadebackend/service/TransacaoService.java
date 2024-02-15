@@ -21,7 +21,7 @@ public class TransacaoService {
     }
 
     public Cliente executeCreditOperation(TransacaoDTORequest dtoRequest, Integer id) {
-        Cliente cliente = clienteRepository.creditOperation(id, dtoRequest.valor()); //TODO garantir que ambas as transações ocorram para commitar?
+        clienteRepository.creditOperation(id, dtoRequest.valor()); //TODO garantir que ambas as transações ocorram para commitar?
         transacaoRepository.save(
                 Transacao
                         .builder()
@@ -32,21 +32,21 @@ public class TransacaoService {
                         .valor(dtoRequest.valor())
                         .build()
         );
-        return cliente;
+        return clienteRepository.findById(id).orElseThrow();
 
     }
 
     public Cliente executeDebitOperation(TransacaoDTORequest dtoRequest, Integer id) {
-        Cliente cliente = clienteRepository.getReferenceById(id);
+        Cliente cliente = clienteRepository.findById(id).orElseThrow();
 
         Long valorDebitado = dtoRequest.valor();
 
         if (isShouldExecute(valorDebitado, cliente)) {
-            Cliente clienteAtualizado = clienteRepository.debitOperation(id, valorDebitado);
+            clienteRepository.debitOperation(id, valorDebitado);
             transacaoRepository.save(
                     getTransacao(dtoRequest, id, valorDebitado)
             );
-            return clienteAtualizado;
+            return clienteRepository.findById(id).orElseThrow();
         } else {
            throw new RuntimeException();
         }
