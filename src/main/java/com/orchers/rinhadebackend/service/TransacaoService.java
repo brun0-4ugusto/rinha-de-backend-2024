@@ -37,19 +37,11 @@ public class TransacaoService {
     }
 
     public Cliente executeDebitOperation(TransacaoDTORequest dtoRequest, Integer id) {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow();
+        clienteRepository.debitOperation(id, dtoRequest.valor());
 
-        Long valorDebitado = dtoRequest.valor();
+        transacaoRepository.save(getTransacao(dtoRequest, id, dtoRequest.valor()));
 
-        if (isShouldExecute(valorDebitado, cliente)) {
-            clienteRepository.debitOperation(id, valorDebitado);
-            transacaoRepository.save(
-                    getTransacao(dtoRequest, id, valorDebitado)
-            );
-            return clienteRepository.findById(id).orElseThrow();
-        } else {
-           throw new RuntimeException();
-        }
+        return clienteRepository.findById(id).orElseThrow();
     }
 
     private Transacao getTransacao(TransacaoDTORequest dtoRequest, Integer id, Long valorDebitado) {
@@ -60,9 +52,5 @@ public class TransacaoService {
                 .realizadaEm(LocalDateTime.now())
                 .descricao(dtoRequest.descricao())
                 .build();
-    }
-
-    private boolean isShouldExecute(Long valorDebitado, Cliente cliente) {
-        return cliente.getSaldo() - valorDebitado >= (cliente.getLimite() * -1);
     }
 }

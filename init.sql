@@ -1,6 +1,6 @@
 create table if not exists cliente (
     id numeric primary key,
-    saldo numeric not null,
+    saldo numeric not null check (saldo >= (limite * -1)),
     limite numeric not null
 );
 
