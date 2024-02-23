@@ -19,7 +19,7 @@ public class TransacaoController {
 
     @PostMapping("/clientes/{id}/transacoes")
     public ResponseEntity<?> postTransacao(@PathVariable Integer id, @RequestBody TransacaoDTORequest body) {
-        if (id > 5 || id < 0)
+        if (id > 5 || id < 1)
             return ResponseEntity.notFound().build();
 
         switch (body.tipo()) {
