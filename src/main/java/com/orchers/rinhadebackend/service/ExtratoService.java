@@ -7,40 +7,37 @@ import com.orchers.rinhadebackend.model.Cliente;
 import com.orchers.rinhadebackend.model.Transacao;
 import com.orchers.rinhadebackend.repository.ClienteRepository;
 import com.orchers.rinhadebackend.repository.TransacaoRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Service
 public class ExtratoService {
-
-    private final ClienteRepository clienteRepository;
     private final TransacaoRepository transacaoRepository;
 
-    public ExtratoService(ClienteRepository clienteRepository, TransacaoRepository transacaoRepository) {
-        this.clienteRepository = clienteRepository;
+    public ExtratoService(TransacaoRepository transacaoRepository) {
         this.transacaoRepository = transacaoRepository;
     }
 
     public ExtratoDTOResponse getExtrato(Integer id) {
+        List<Transacao> transacoes = transacaoRepository.findByClienteIdOrderByRealizadaEmDesc(id ,Limit.of(10));
 
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-
-        if(cliente.isEmpty())
+        if(transacoes.isEmpty()){
             throw new RuntimeException();
-
-        TreeSet<Transacao> transacoes = transacaoRepository.findByIdOrderByRealizadaEm(Limit.of(10));
-
+        }
 
         return ExtratoDTOResponse.builder()
                 .saldo(SaldoDTOResponse.builder()
-                        .total(cliente.get().getSaldo())
+                        .total(transacoes.get(0).getCliente().getSaldo())
                         .dataExtrato(LocalDateTime.now())
-                        .limite(cliente.get().getLimite())
+                        .limite(transacoes.get(0).getCliente().getLimite())
                         .build())
                 .ultimasTransacoes(
                         transacoes.stream()
@@ -50,7 +47,7 @@ public class ExtratoService {
                                 .descricao(transacao.getDescricao())
                                 .realizadaEm(transacao.getRealizadaEm())
                                 .build())
-                        .collect(Collectors.toCollection(TreeSet::new)))
+                        .collect(Collectors.toCollection(LinkedList::new)))
                 .build();
     }
 }
