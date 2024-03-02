@@ -2,7 +2,11 @@ version: '3.5'
 services:
   rinha1:
     hostname: "rinha1"
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
     depends_on:
       db:
         condition: service_healthy
@@ -20,7 +24,11 @@ services:
 
   rinha2:
     hostname: "rinha2"
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
     depends_on:
       db:
         condition: service_healthy

@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.TreeSet;
 
 @Builder
@@ -13,5 +14,5 @@ import java.util.TreeSet;
 @EqualsAndHashCode
 public class ExtratoDTOResponse {
     private SaldoDTOResponse saldo;
-    private TreeSet<TransacaoExtratoDTOResponse> ultimasTransacoes;
+    private List<TransacaoExtratoDTOResponse> ultimasTransacoes;
 }

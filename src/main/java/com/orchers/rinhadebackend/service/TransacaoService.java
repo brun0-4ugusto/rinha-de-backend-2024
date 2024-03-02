@@ -25,7 +25,9 @@ public class TransacaoService {
         transacaoRepository.save(
                 Transacao
                         .builder()
-                        .idCliente(id)
+                        .cliente(Cliente.builder()
+                                .id(id)
+                                .build())
                         .realizadaEm(LocalDateTime.now())
                         .descricao(dtoRequest.descricao())
                         .tipo(dtoRequest.tipo())
@@ -46,7 +48,9 @@ public class TransacaoService {
 
     private Transacao getTransacao(TransacaoDTORequest dtoRequest, Integer id, Long valorDebitado) {
         return Transacao.builder()
-                .idCliente(id)
+                .cliente(Cliente.builder()
+                        .id(id)
+                        .build())
                 .valor(valorDebitado)
                 .tipo(dtoRequest.tipo())
                 .realizadaEm(LocalDateTime.now())

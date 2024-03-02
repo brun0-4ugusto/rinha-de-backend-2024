@@ -4,14 +4,6 @@ create table if not exists cliente (
     limite numeric not null
 );
 
-create table if not exists transacao (
-    id numeric primary key,
-    valor numeric,
-    tipo char,
-    descricao varchar,
-    realizada_em Timestamp
-);
-
 insert into cliente (id,saldo,limite)
 values
     (1,0,100000),
@@ -19,3 +11,12 @@ values
     (3,0,1000000),
     (4,0,10000000),
     (5,0,500000);
+
+create table if not exists transacao (
+    id serial primary key,
+    cliente_id numeric references cliente(id),
+    valor numeric,
+    tipo char,
+    descricao varchar,
+    realizada_em Timestamp
+);

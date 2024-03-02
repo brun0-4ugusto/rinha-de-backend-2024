@@ -1,9 +1,6 @@
 package com.orchers.rinhadebackend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,12 +17,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Transacao {
     @Id
-    @Column(name = "id")
-    private Integer idCliente;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @ManyToOne
+    private Cliente cliente;
+
     private Long valor;
+
     private String tipo;
+
     @Size(max = 10)
     private String descricao; //limitar o tamanho?
+
     @Column(name = "realizada_em")
     private LocalDateTime realizadaEm;
 }
